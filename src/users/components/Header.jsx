@@ -1,34 +1,55 @@
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 
+
 const Header = () => {
+
+  const [listStatus,setListStatus] = useState(false)
+
   return (
     <>
-   <div className='flex justify-between mx-10'>
-      <img src="/logo.png" alt="logo" width={'50px'} height={'50px'} />
-      <h1 className='md:text-4xl text-2xl font-bold'>BOOK STORE</h1>
-      <div className='flex items-center justify-center' >
-        <FontAwesomeIcon icon={faInstagram} />
-        <FontAwesomeIcon className='mx-3' icon={faTwitter} />
-        <FontAwesomeIcon icon={faFacebook} />
+      <div className="grid grid-cols-3 p-3">
 
-        <button className='ms-5 border px-3 py-1'>Login</button>
+        {/* logo and title  */}
+        <div className='flex items-center'>
+          <img src="/logo.png" alt="logo" width={'50px'} height={'50px'} />
+          <h1 className="font-bold text-2xl ms-2 md:hidden">BOOKSTORE</h1>
+        </div>
+
+        <div className='md:flex justify-center items-center hidden'>
+          <h1 className='font-bold text-4xl'>BOOK STORE</h1>
+        </div>
+
+        <div className='md:flex justify-end items-center hidden'>
+          <FontAwesomeIcon icon={faInstagram} />
+          <FontAwesomeIcon className='mx-3' icon={faTwitter} />
+          <FontAwesomeIcon icon={faFacebook} />
+
+
+          <Link to={'/login'}><button className='border border-black rounded py-2 px-3 ms-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faUser} className='me-3' />Login</button></Link>
+        </div>
       </div>
-   </div>
 
-   <div className='h-10 w-full bg-stone-950 text-white'>
-    <ul className='flex justify-evenly align-items-center pt-2 font-semibold'>
-      <li>Home</li>
-      <li >Books</li>
-      <li>Careers</li>
-      <li>Contact</li>
-    </ul>
-   </div>
+      <nav className='w-full p-3 bg-black text-white'>
+
+        <div className="flex justify-between items-center md:hidden">
+          <button onClick={()=>setListStatus(!listStatus)}><FontAwesomeIcon icon={faBars} /></button>
+          <Link to={'/login'}><button className='border border-black rounded py-2 px-3 ms-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faUser} className='me-3' />Login</button></Link>
+        </div>
+        <ul className={listStatus?'flex flex-col':'md:flex justify-center items-center hidden '}>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/'} >Home</Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/all-books'} >Books</Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/careers'} >Careers</Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/contact'} >Contact</Link></li>
+        </ul>
+      </nav>
     </>
   )
 }
 
-export default Header
+export default Header 
