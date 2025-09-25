@@ -54,7 +54,7 @@ const AllBooks = () => {
             <div className='flex justify-center items-center flex-col  my-5'>
               <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
               <p>The Da Vinci Code</p>
-              <Link to={'/books/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
+              <Link to={'/book/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
             </div>
 
           </div>
@@ -63,7 +63,7 @@ const AllBooks = () => {
             <div className='flex justify-center items-center flex-col  my-5'>
               <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
               <p>The Da Vinci Code</p>
-              <Link to={'/books/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
+              <Link to={'/book/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
             </div>
 
           </div>
@@ -72,7 +72,7 @@ const AllBooks = () => {
             <div className='flex justify-center items-center flex-col  my-5'>
               <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
               <p>The Da Vinci Code</p>
-              <Link to={'/books/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
+              <Link to={'/book/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
             </div>
 
           </div>
@@ -81,7 +81,7 @@ const AllBooks = () => {
             <div className='flex justify-center items-center flex-col  my-5'>
               <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
               <p>The Da Vinci Code</p>
-              <Link to={'/books/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
+              <Link to={'/book/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
             </div>
 
           </div>
