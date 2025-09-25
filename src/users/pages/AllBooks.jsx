@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
+import { Link } from 'react-router-dom'
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const AllBooks = () => {
+
+
+
+const AllBooks = () => { 
+  
+  const [listStatus,setListStatus] = useState(false)
+
   return (
     <>
     <Header/>
@@ -14,23 +23,65 @@ const AllBooks = () => {
       </div>
      </div>
 
-     <div className="grid grid-cols-3 md:px-40 p-5">
+     <div className="md:grid grid-cols-4 md:px-20 p-5 mb-10">
      <div className="col-span-1">
+     <div className='flex justify-between p-3'> 
       <h1 className='text-xl font-semibold'>Filter</h1>
-      <div className='mt-3'>
-        <input type="radio" name="filter" id="Literary" />
-        <label className='ms-3' htmlFor="Literary">Literary function</label>
-      </div>
+      <button className='text-2xl md:hidden' onClick={()=>setListStatus(!listStatus)}><FontAwesomeIcon icon={faBars} /></button>
+     
+
+     </div>
+    <div className={listStatus?'block':'md:block hidden'}>
+        <div className='mt-3'>
+          <input type="radio" name="filter" id="Literary" />
+          <label className='ms-3' htmlFor="Literary">Literary function</label>
+        </div>
+        <div className='mt-3'>
+          <input type="radio" name="filter" id="Literary" />
+          <label className='ms-3' htmlFor="Literary">Literary function</label>
+        </div>
+        <div className='mt-3'>
+          <input type="radio" name="filter" id="Literary" />
+          <label className='ms-3' htmlFor="Literary">Literary function</label>
+        </div>
+    </div>
      </div>
 
-     <div className="col-span-2">
-      <div className="md:grid grid-cols-4">
+     <div className="col-span-3">
+      <div className="md:grid grid-cols-4 gap-5">
            <div className='shadow rounded p-3'>
             <img width={'100%'} height={'400px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" />
             <div className='flex justify-center items-center flex-col  my-5'>
               <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
               <p>The Da Vinci Code</p>
-              <h5>$18</h5>
+              <Link to={'/books/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
+            </div>
+
+          </div>
+           <div className='shadow rounded p-3'>
+            <img width={'100%'} height={'400px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" />
+            <div className='flex justify-center items-center flex-col  my-5'>
+              <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
+              <p>The Da Vinci Code</p>
+              <Link to={'/books/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
+            </div>
+
+          </div>
+           <div className='shadow rounded p-3'>
+            <img width={'100%'} height={'400px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" />
+            <div className='flex justify-center items-center flex-col  my-5'>
+              <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
+              <p>The Da Vinci Code</p>
+              <Link to={'/books/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
+            </div>
+
+          </div>
+           <div className='shadow rounded p-3'>
+            <img width={'100%'} height={'400px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" />
+            <div className='flex justify-center items-center flex-col  my-5'>
+              <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
+              <p>The Da Vinci Code</p>
+              <Link to={'/books/id/view'} className='px-3 py-2 mt-2 bg-blue-900 text-white'>View Book</Link>
             </div>
 
           </div>

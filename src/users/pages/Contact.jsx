@@ -2,10 +2,8 @@ import React from 'react'
 import Header from '../components/Header'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons'
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
+import { faEnvelope, faPaperPlane } from '@fortawesome/free-regular-svg-icons'
 import Footer from '../../components/Footer'
-
-
 
 const Contact = () => {
   return (
@@ -40,12 +38,13 @@ const Contact = () => {
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 md:px-40 my-10 flex ">
 
         <div className='md:p-20 p-10'>
-          <div className=' bg-gray-300 h-70 rounded px-10'>
+          <div className=' bg-gray-300 h-80 rounded px-10'>
             <h2 className='text-center font-bold py-5'>Send a message</h2>
             <form action="">
               <input type="text" placeholder='Name' className='bg-white placeholder-gray-400 p-1 w-full rounded' />
               <input type="text" placeholder='Email ID' className='bg-white placeholder-gray-400 p-1 w-full rounded my-5' />
               <textarea name="" id="" placeholder='Message' className='bg-white placeholder-gray-400 p-1 w-full rounded' rows={3}></textarea>
+              <button className='p-2 bg-black text-white my-3 w-full'>Send <FontAwesomeIcon icon={faPaperPlane} /></button>
 
             </form>
 
