@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUpRightFromSquare, faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUpRightFromSquare, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 
 
 
 const Careers = () => {
+  const [modalStatus, setModalStatus] = useState(false)
   return (
     <>
 
@@ -34,7 +35,7 @@ const Careers = () => {
             <h5 className='text-xl'>Job Title</h5>
             <hr className='mt-3 text-gray-300' />
           </div>
-          <button className='px-3 py-2 text-white bg-blue-900 flex items-center ms-3'>Apply <FontAwesomeIcon icon={faArrowUpRightFromSquare} /></button>
+          <button onClick={() => setModalStatus(true)} className='px-3 py-2 text-white bg-blue-900 flex items-center ms-3'>Apply <FontAwesomeIcon icon={faArrowUpRightFromSquare} /></button>
         </div>
 
         <div>
@@ -54,6 +55,59 @@ const Careers = () => {
 
 
       </div>
+
+      {
+        modalStatus &&
+        <div className='relative z-10 overflow-y-auto ' >
+          <div className='bg-gray-500/75 fixed inset-0 '>
+            <div className="flex justify-center items-center min-h-screen ">
+              <div style={{ width: '700px' }} className='bg-white rounded-xl md:mx-0 mx-5'>
+                <div className='bg-black text-white flex justify-between items-center p-3 '>
+                  <h3>Application form</h3>
+                  <FontAwesomeIcon onClick={() => setModalStatus(false)} icon={faXmark} />
+                </div>
+
+                <div className="relative p-5 ">
+                  <div className="md:grid grid-cols-2 gap-x-5">
+                    <div className="mb-3">
+                      <input type="text" placeholder='Full Name' className='w-full border rounded placeholder-gray-600 p-2 ' />
+                    </div>
+
+                    <div className="mb-3">
+                      <input type="text" placeholder='Qualification' className='w-full border rounded placeholder-gray-600 p-2 ' />
+                    </div>
+
+                    <div className="mb-3">
+                      <input type="text" placeholder='Email ID' className='w-full border rounded placeholder-gray-600 p-2 ' />
+                    </div>
+
+                    <div className="mb-3">
+                      <input type="text" placeholder='Phone' className='w-full border rounded placeholder-gray-600 p-2 ' />
+                    </div>
+
+                    <div className="mb-3 col-span-2">
+                      <textarea placeholder='Cover Letter' className='w-full border rounded placeholder-gray-600 p-2 ' />
+                    </div>
+
+
+                    <div className="mb-3 col-span-2 flex flex-col text-gray-600">
+                      <label htmlFor="">Resume</label>
+                      <input type="file" className='w-full border rounded file:bg-gray-300 file:p-2 file:text-white' />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modal footer */}
+                <div className="bg-gray-200 p-2 w-full flex justify-end">
+                  <button className='bg-black rounded text-white py-2 px-3'>Reset</button>
+                  <button className='ms-3 bg-blue-600 rounded text-white py-2 px-3'>Submit</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      }
 
 
       <Footer />
