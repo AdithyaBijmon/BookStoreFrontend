@@ -1,7 +1,13 @@
-import React from 'react'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Auth = ({register}) => {
+
+  const [viewPasswordStatus,setViewPasswordStatus] = useState(false)
+  const [userDetails,setUserDetails] = useState({username:'',email:'',password:''})
+
   return (
     <div className='bg-[url(https://cdn.pixabay.com/photo/2024/10/12/17/15/flowers-9115519_1280.jpg)] min-h-screen w-full bg-cover flex flex-col items-center justify-center'>
         
@@ -12,11 +18,17 @@ const Auth = ({register}) => {
 
         <h1 className='text-3xl font-bold text-login mt-3'>{register?'Register':'Login'}</h1>
 
-        {register &&  <input type="text" className='placeholder-gray-600 w-full p-3 mt-4 rounded' style={{backgroundColor:'rgba(255, 255, 255, 0.47)' }} placeholder='Enter your name' />}
+        {register &&  
+        <input onChange={(e)=>setUserDetails({...userDetails,username:e.target.value})} value={userDetails.username} type="text" className='placeholder-gray-600 w-full p-3 mt-4 rounded' style={{backgroundColor:'rgba(255, 255, 255, 0.47)' }} placeholder='Enter your name' />}
 
-        <input type="text" className='placeholder-gray-600 w-full p-3 my-5 rounded' style={{backgroundColor:'rgba(255, 255, 255, 0.47)' }} placeholder='Enter your email' />
+        <input onChange={(e)=>setUserDetails({...userDetails,email:e.target.email})} type="text" className='placeholder-gray-600 w-full p-3 my-5 rounded' style={{backgroundColor:'rgba(255, 255, 255, 0.47)' }} placeholder='Enter your email' />
 
-        <input type="text" className='placeholder-gray-600 w-full p-3 rounded ' style={{backgroundColor:'rgba(255, 255, 255, 0.47)' }} placeholder='Enter your password' />
+       <div className='flex items-center w-full'>
+          <input onChange={(e)=>setUserDetails({...userDetails,password:e.target.password})} type={viewPasswordStatus?"text":"password"} className='placeholder-gray-600 w-full p-3 rounded ' style={{backgroundColor:'rgba(255, 255, 255, 0.47)' }} placeholder='Enter your password' />
+          
+         { !viewPasswordStatus? <FontAwesomeIcon icon={faEye} style={{marginLeft:'-30px'}} onChange={()=>setViewPasswordStatus(!viewPasswordStatus)} className='text-gray-700 '/> :
+          <FontAwesomeIcon icon={faEyeSlash} style={{marginLeft:'-30px'}} onChange={()=>setViewPasswordStatus(!viewPasswordStatus)} className='text-gray-700 '/>}
+       </div>
 
         <div className='flex justify-between items-center text-xs w-full my-2'>
            <p className='text-yellow-800 '>*Never share the password with others.</p>

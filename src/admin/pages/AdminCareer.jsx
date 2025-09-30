@@ -4,6 +4,7 @@ import Footer from '../../components/Footer'
 import AdminSideBar from '../components/AdminSideBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
 
 const AdminCareer = () => {
@@ -72,12 +73,12 @@ const AdminCareer = () => {
 
           {
             listApplicantionStatus &&
-            <div className='p-10 overflow-hidden'> 
+            <div className='p-10 overflow-hidden'>
               <table className='w-full my-3 shadow'>
                 <thead>
                   <tr>
-                    <th  className='md:p-3 p-2 bg-blue-800 text-white border border-gray-500' >S.No</th>
-                    <th  className='md:p-3 p-2 bg-blue-800 text-white border border-gray-500'>Job Title</th>
+                    <th className='md:p-3 p-2 bg-blue-800 text-white border border-gray-500' >S.No</th>
+                    <th className='md:p-3 p-2 bg-blue-800 text-white border border-gray-500'>Job Title</th>
                     <th className='md:p-3 p-2 bg-blue-800 text-white border border-gray-500'>Name</th>
                     <th className='md:p-3 p-2 bg-blue-800 text-white border border-gray-500'>Qualification</th>
                     <th className='md:p-3 p-2 bg-blue-800 text-white border border-gray-500'>Email</th>
@@ -86,6 +87,18 @@ const AdminCareer = () => {
                     <th className='md:p-3 p-2 bg-blue-800 text-white border border-gray-500'>Resume</th>
                   </tr>
                 </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-500 p-3 text-center"> 1</td>
+                    <td className="border border-gray-500 p-3 text-center">Full stack developer</td>
+                    <td className="border border-gray-500 p-3 text-center">Lily John</td>
+                    <td className="border border-gray-500 p-3 text-center"> B.Tech</td>
+                    <td className="border border-gray-500 p-3 text-center"> lily@gmail.com</td>
+                    <td className="border border-gray-500 p-3 text-center"> 8978675645</td>
+                    <td className="border border-gray-500 p-3 text-center"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi odio ipsam et dicta eum voluptatum porro nesciunt, saepe excepturi dolorum maxime debitis aperiam cum nostrum est voluptas commodi reiciendis sapiente.</td>
+                    <td className="border border-gray-500 p-3 text-center"> <Link className='text-blue-600 underline'>Resume</Link></td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           }
