@@ -25,9 +25,11 @@ const Auth = ({register}) => {
 
        <div className='flex items-center w-full'>
           <input onChange={(e)=>setUserDetails({...userDetails,password:e.target.password})} type={viewPasswordStatus?"text":"password"} className='placeholder-gray-600 w-full p-3 rounded ' style={{backgroundColor:'rgba(255, 255, 255, 0.47)' }} placeholder='Enter your password' />
-          
-         { !viewPasswordStatus? <FontAwesomeIcon icon={faEye} style={{marginLeft:'-30px'}} onChange={()=>setViewPasswordStatus(!viewPasswordStatus)} className='text-gray-700 '/> :
-          <FontAwesomeIcon icon={faEyeSlash} style={{marginLeft:'-30px'}} onChange={()=>setViewPasswordStatus(!viewPasswordStatus)} className='text-gray-700 '/>}
+
+         { !viewPasswordStatus? 
+         <FontAwesomeIcon icon={faEye} style={{marginLeft:'-30px'}} onChange={()=>setViewPasswordStatus(!viewPasswordStatus)} className='text-gray-700 '/> :
+          <FontAwesomeIcon icon={faEyeSlash} style={{marginLeft:'-30px'}} onChange={()=>setViewPasswordStatus(!viewPasswordStatus)} className='text-gray-700 '/>
+          }
        </div>
 
         <div className='flex justify-between items-center text-xs w-full my-2'>
