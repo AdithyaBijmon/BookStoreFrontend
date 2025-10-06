@@ -2,6 +2,8 @@ import React from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 
 const Home = () => {
@@ -15,9 +17,10 @@ const Home = () => {
         <p>Give your family and friend a book.</p>
 
         <div className='my-3'>
-          <input type="text" className='bg-white px-2 py-3 rounded-full placeholder-gray-400 w-100 font-semibold' placeholder='Search book' />
-
+          <input type="text" className='bg-white px-4 py-3 rounded-full placeholder-gray-400 w-100 font-semibold' placeholder='Search book' />
+          <FontAwesomeIcon style={{marginLeft:'-40px'}} className='text-gray-400 z-5 cursor-pointer' icon={faMagnifyingGlass}/>
         </div>
+        
 
       </div>
 
