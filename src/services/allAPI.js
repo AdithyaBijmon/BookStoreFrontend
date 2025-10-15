@@ -9,6 +9,15 @@ import SERVERURL from "./serverURL"
     }
 
     // login api
+
+    export const loginAPI = async(reqBody)=>{
+     return await commonAPI("POST",`${SERVERURL}/login`,reqBody)
+    }
+    
+    // google login api
+    export const googleLoginAPI = async(reqBody)=>{
+     return await commonAPI("POST",`${SERVERURL}/google-login`,reqBody)
+    }
     // home page books api
     // all career api
 
