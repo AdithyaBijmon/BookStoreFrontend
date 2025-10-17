@@ -22,8 +22,6 @@ const Header = () => {
       setToken(token)
 
       const user = JSON.parse(sessionStorage.getItem("user"))
-       
-      
       setUserDp(user.profile)
     }
   }, [token])
@@ -62,7 +60,7 @@ const Header = () => {
             <div className='relative inline-block text-left'>
               <div>
                 <button onClick={() => setDropDownStatus(!dropDownStatus)} className='w-full bg-white px-3 py-2 shadow-xs hover:bg-gray-50'>
-                  <img style={{ width: '40px', height: '40px' }} className='rounded-full mx-2' src={userDp == "" ? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : userDp.startsWith("https://lh3.googleusercontent.com/a/")?userDp:"https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="user" />
+                  <img style={{ width: '40px', height: '40px' }} className='rounded-full mx-2' src={userDp == "" ? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : userDp.startsWith("https://lh3.googleusercontent.com/a")?userDp:"https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="user" />
                 </button>
 
                { 

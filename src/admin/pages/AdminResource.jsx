@@ -78,7 +78,42 @@ const AdminResource = () => {
               
               <div className='bg-gray-200 w-full p-5'>
                 <h6 className='text-lg text-red-500'>ID : 12345678</h6>
+
+                <div className='my-5 flex '>
+                  <img style={{width:'50px',height:'50px',borderRadius:'50%'}} src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="user" />
+
+                  <div className='flex flex-col ms-5'>
+                    <h3>Max Miller</h3>
+                    <h4>max@gmail.com</h4>
+                  </div>
+                </div>
               </div>
+
+              <div className='bg-gray-200 w-full p-5'>
+                <h6 className='text-lg text-red-500'>ID : 12345678</h6>
+
+                <div className='my-5 flex '>
+                  <img style={{width:'50px',height:'50px',borderRadius:'50%'}} src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="user" />
+
+                  <div className='flex flex-col ms-5'>
+                    <h3>Max Miller</h3>
+                    <h4>max@gmail.com</h4>
+                  </div>
+                </div>
+              </div>
+              <div className='bg-gray-200 w-full p-5'>
+                <h6 className='text-lg text-red-500'>ID : 12345678</h6>
+
+                <div className='my-5 flex '>
+                  <img style={{width:'50px',height:'50px',borderRadius:'50%'}} src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="user" />
+
+                  <div className='flex flex-col ms-5'>
+                    <h3>Max Miller</h3>
+                    <h4>max@gmail.com</h4>
+                  </div>
+                </div>
+              </div>
+              
 
             </div>
           }
