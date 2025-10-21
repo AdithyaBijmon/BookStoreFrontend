@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
+import { toast, ToastContainer } from 'react-toastify'
+import { addBookAPI } from '../../services/allAPI'
 
 const Profile = () => {
 
@@ -15,22 +17,84 @@ const Profile = () => {
 
   const [preview, setPreview] = useState("")
   const [previewList, setPreviewList] = useState([])
+  // const [token, setToken] = useState("")
 
-  console.log(bookDetails)
+  // useEffect(() => {
+  //   if (sessionStorage.getItem("token")) {
+  //     setToken(sessionStorage.getItem("token"))
+  //   }
+  // }, [])
+
+  // console.log(bookDetails)
+
+  const handleReset = () => {
+    setBookDetails({
+      title: "", author: "", noOfPages: "", imgUrl: "", price: "", discountPrice: "", abstract: "", publisher: "", language: "", isbn: "", category: "", uploadImages: []
+    })
+    setPreview("")
+    setPreviewList([])
+
+  }
 
   const handleUploadBookImage = (e) => {
-    console.log(e.target.files[0])
+    const newFile = e.target.files[0];
+    const url = URL.createObjectURL(newFile)
 
     const fileArray = bookDetails.uploadImages
-    fileArray.push(e.target.files[0])
-    setBookDetails({...bookDetails,uploadImages:fileArray})
-
-    const url = URL.createObjectURL(e.target.files[0])
+    fileArray.push(newFile)
+    setBookDetails({ ...bookDetails, uploadImages: fileArray })
     setPreview(url)
 
     const bookImgArray = previewList
     bookImgArray.push(url)
     setPreviewList(bookImgArray)
+
+  }
+
+  const handleBookSubmit = async () => {
+    const token = sessionStorage.getItem("token");
+    console.log("Token being sent:", token);
+    const { title, author, noOfPages, imgUrl, price, discountPrice, abstract, publisher, language, isbn, category, uploadImages } = bookDetails
+
+    if (!title || !author || !noOfPages || !imgUrl || !price || !discountPrice || !abstract || !publisher || !language || !isbn || !category || uploadImages.length === 0) {
+      toast.info("Please fill the form completely")
+    }
+    else {
+      // api call
+
+      const reqBody = new FormData()
+
+      for (let key in bookDetails) {
+        if (key != "uploadImages") {
+          reqBody.append(key, bookDetails[key])
+        }
+        else {
+          bookDetails.uploadImages.forEach(img => {
+            reqBody.append("uploadImages", img)
+          })
+        }
+      }
+
+      try {
+        const result = await addBookAPI(reqBody, {
+          Authorization: `Bearer ${token}`
+        });
+
+        if (result.status === 200) {
+          toast.success("Book added successfully");
+          handleReset();
+        } else if (result.status === 401) {
+          toast.warning(result.data || "Unauthorized");
+          handleReset();
+        } else {
+          toast.error("Something went wrong");
+          handleReset();
+        }
+      } catch (err) {
+        console.log("Axios Error:", err.response);
+      }
+
+    }
   }
   return (
     <>
@@ -122,28 +186,31 @@ const Profile = () => {
 
                   <div className='mb-3 mt-10 flex justify-center items-center'>
                     <label htmlFor='bookImage'>
-                      <input onChange={e => handleUploadBookImage(e)} type="file" id='bookImage ' className='' />
-                      {!preview ?
-                        <img width={'200px'} height={'200px'} src="https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_640.png" alt="" /> :
-                        <img width={'200px'} height={'200px'} src={preview} alt="bookImage" />
+
+                      <input onChange={e => handleUploadBookImage(e)} type="file" id='bookImage' className='hidden' />
+                      {
+                        !preview ?
+                          <img width={'200px'} height={'200px'} src="https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_640.png" alt="" /> :
+                          <img width={'200px'} height={'200px'} src={preview} alt="bookImage" />
                       }
                     </label>
                   </div>
 
-                  { preview &&
+                  {preview &&
                     <div className=' flex justify-center items-center'>
                       {
-                        previewList?.map(imgUrl=>(
-                          <img width={'70px'} height={'70px'} src={imgUrl} alt="bookImage" />
+                        previewList?.map(imgUrl => (
+                          <img style={{ width: '70px', height: '70px', objectFit: 'cover' }} src={imgUrl} alt="bookImage" className='ms-3' />
                         ))
                       }
-                   { previewList.length<3 &&
-                    <label htmlFor='bookImage'>
-                      <input onChange={e => handleUploadBookImage(e)} type="file" id='bookImage ' className='' />
-                      <FontAwesomeIcon icon={faSquarePlus} className='fa-2x shadow ms-3 text-gray-400' />
-                    </label>
-                    }
-                  </div>
+                      {
+                        previewList.length < 3 &&
+                        <label htmlFor='bookImage'>
+                          <input onChange={e => handleUploadBookImage(e)} type="file" id='bookImage ' className='hidden' />
+                          <FontAwesomeIcon icon={faSquarePlus} className='fa-2x shadow ms-3 text-gray-400' />
+                        </label>
+                      }
+                    </div>
                   }
 
                 </div>
@@ -151,8 +218,8 @@ const Profile = () => {
               </div>
 
               <div className=" p-2 w-full flex justify-end">
-                <button className='bg-black rounded text-white py-2 px-3 hover:bg-white hover:text-black'>Reset</button>
-                <button className='ms-3 bg-blue-600 rounded text-white py-2 px-3 hover:bg-white hover:text-blue-600'>Submit</button>
+                <button onClick={handleReset} className='bg-black rounded text-white py-2 px-3 hover:bg-white hover:text-black'>Reset</button>
+                <button onClick={handleBookSubmit} className='ms-3 bg-blue-600 rounded text-white py-2 px-3 hover:bg-white hover:text-blue-600'>Submit</button>
               </div>
             </div>
           </div>
@@ -236,6 +303,20 @@ const Profile = () => {
 
 
       <Footer />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+
+      />
     </>
   )
 }

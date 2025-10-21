@@ -1,12 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { getHomeBooksAPI } from '../../services/allAPI'
 
 
 const Home = () => {
+
+  const [homeBooks,setHomeBooks] = useState([])
+
+  useEffect(()=>{
+    getHomeBooks()
+  })
+
+  const getHomeBooks = async ()=>{
+    try{
+      const result = await getHomeBooksAPI()
+      if(result.status==200){
+        setHomeBooks(result.data)
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   return (
     <>
       <Header />

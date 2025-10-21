@@ -76,6 +76,7 @@ const Auth = ({ register }) => {
             }
             else {
               navigate('/')
+             
             }
           }, 3000)
         }
@@ -118,6 +119,7 @@ const Auth = ({ register }) => {
             }
             else {
               navigate('/')
+             
             }
           }, 3000)
       }
