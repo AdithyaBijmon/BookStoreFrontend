@@ -31,8 +31,8 @@ import SERVERURL from "./serverURL"
      return await commonAPI("POST",`${SERVERURL}/add-book`,reqBody,reqHeader)
     }
     // view all books 
-    export const getAllBooksAPI = async(reqHeader)=>{
-     return await commonAPI("GET",`${SERVERURL}/all-books`,{},reqHeader)
+    export const getAllBooksAPI = async(search,reqHeader)=>{
+     return await commonAPI("GET",`${SERVERURL}/all-books?search=${search}`,{},reqHeader)
     }
     // view single book - called by view component when it load in browser
     export const getSingleBookAPI = async(bookID,reqHeader)=>{

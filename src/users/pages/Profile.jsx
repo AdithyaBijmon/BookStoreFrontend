@@ -62,6 +62,10 @@ const Profile = () => {
     else {
       // api call
 
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+
       const reqBody = new FormData()
 
       for (let key in bookDetails) {
@@ -76,22 +80,23 @@ const Profile = () => {
       }
 
       try {
-        const result = await addBookAPI(reqBody, {
-          Authorization: `Bearer ${token}`
-        });
+        const result = await addBookAPI(reqBody, reqHeader);
+        // console.log(reqHeader)
+        // console.log(Authorization)
 
-        if (result.status === 200) {
-          toast.success("Book added successfully");
+        if (result.status == 401) {
+          toast.warning(result.response.data);
           handleReset();
-        } else if (result.status === 401) {
-          toast.warning(result.data || "Unauthorized");
+
+        } else if (result.status == 200) {
+          toast.success("Book added successfully");
           handleReset();
         } else {
           toast.error("Something went wrong");
           handleReset();
         }
       } catch (err) {
-        console.log("Axios Error:", err.response);
+        console.log(err)
       }
 
     }

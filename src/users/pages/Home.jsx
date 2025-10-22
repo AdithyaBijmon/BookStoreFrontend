@@ -50,42 +50,20 @@ const Home = () => {
 
         <div className='grid md:grid-cols-4 grid-cols-1   gap-10 my-10 w-full'>
 
-          <div className='shadow rounded p-3'>
-            <img width={'100%'} height={'400px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" />
+         { homeBooks?.length>0 &&
+           homeBooks?.map((book,index)=>(
+            <div key={index} className='shadow rounded p-3'>
+            <img width={'100%'} height={'400px'} src={book?.imgUrl} alt="" />
             <div className='flex justify-center items-center flex-col  my-5'>
-              <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
-              <p>The Da Vinci Code</p>
-              <h5>$18</h5>
+              <h3 className='text-blue-500 font-bold'>{book?.author}</h3>
+              <p>{book?.title}</p>
+              <h5>{book?.discountPrice}</h5>
             </div>
 
           </div>
-          <div className='shadow rounded p-3'>
-            <img width={'100%'} height={'400px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" />
-            <div className='flex justify-center items-center flex-col  my-5'>
-              <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
-              <p>The Da Vinci Code</p>
-              <h5>$18</h5>
-            </div>
-
-          </div>
-          <div className='shadow rounded p-3'>
-            <img width={'100%'} height={'400px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" />
-            <div className='flex justify-center items-center flex-col  my-5'>
-              <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
-              <p>The Da Vinci Code</p>
-              <h5>$18</h5>
-            </div>
-
-          </div>
-          <div className='shadow rounded p-3'>
-            <img width={'100%'} height={'400px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" />
-            <div className='flex justify-center items-center flex-col  my-5'>
-              <h3 className='text-blue-500 font-bold'>Dan Brown</h3>
-              <p>The Da Vinci Code</p>
-              <h5>$18</h5>
-            </div>
-
-          </div>
+           ))
+          }
+          
         </div>
 
         <Link to={'/all-books'}><button className='px-3 py-2 bg-blue-900 text-white'>Explore More</button></Link>

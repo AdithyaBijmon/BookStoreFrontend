@@ -139,7 +139,7 @@ const Auth = ({ register }) => {
   return (
     <div className='bg-[url(https://cdn.pixabay.com/photo/2024/10/12/17/15/flowers-9115519_1280.jpg)] min-h-screen w-full bg-cover flex flex-col items-center justify-center'>
 
-      <h1 className='text-3xl text-white font-bold text-center py-5'>BOOKSTORE</h1>
+      <h1 className='text-3xl text-white font-bold text-center py-5 cursor-pointer'><Link to={'/'}>BOOKSTORE</Link></h1>
       <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.33)' }} className='rounded p-3 w-95 flex justify-center items-center flex-col'>
 
         <img width={'100px'} src="https://static.vecteezy.com/system/resources/previews/019/879/198/non_2x/user-icon-on-transparent-background-free-png.png" alt="" />
