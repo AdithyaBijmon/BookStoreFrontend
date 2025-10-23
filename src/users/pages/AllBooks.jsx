@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { Link } from 'react-router-dom'
@@ -6,6 +6,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast, ToastContainer } from 'react-toastify'
 import { getAllBooksAPI } from '../../services/allAPI';
+import { searchBookContext } from '../../contextAPI/ContextShare';
 
 const AllBooks = () => {
 
@@ -14,7 +15,7 @@ const AllBooks = () => {
   const [books, setBooks] = useState([])
   const [tempBooks, setTempBooks] = useState([])
   const [allCategories, setAllCategories] = useState([])
-  const [searchKey,setSearchKey] = useState("")
+  const { searchKey, setSearchKey } = useContext(searchBookContext)
 
   console.log(books);
 
@@ -73,7 +74,7 @@ const AllBooks = () => {
             <div className="flex justify-center items-center flex-col my-5 w-full">
               <h1 className='text-3xl font-semibold'>Collections</h1>
               <div className="flex my-5 ">
-                <input className='border p-2 border-gray-300' type="text" placeholder='Search by title' onChange={(e)=>setSearchKey(e.target.value)}/>
+                <input value={searchKey} className='border p-2 border-gray-300' type="text" placeholder='Search by title' onChange={(e)=>setSearchKey(e.target.value)}/>
                 <button className='px-3 py-2 bg-blue-600 text-white'>Search</button>
               </div>
             </div>
@@ -111,8 +112,8 @@ const AllBooks = () => {
                 <div className="md:grid grid-cols-4 gap-5">
                   {
                     books?.length > 0 ?
-                      books?.map(book => (
-                        <div className='shadow rounded p-3'>
+                      books?.map((book,index) => (
+                        <div key={index} className='shadow rounded p-3'>
                           <img width={'100%'} height={'400px'} src={book?.imgUrl} alt="" />
                           <div className='flex justify-center items-center flex-col  my-5'>
                             <h3 className='text-blue-500 font-bold'>{book?.author.slice(0, 20)}</h3>

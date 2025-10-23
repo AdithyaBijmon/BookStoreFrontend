@@ -4,11 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import ContextShare from './contextAPI/ContextShare.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <GoogleOAuthProvider clientId='171493051179-fphrvu73n0q4bpfu19448tpc7slsj8bv.apps.googleusercontent.com'><App /></GoogleOAuthProvider>
+      <GoogleOAuthProvider clientId='171493051179-fphrvu73n0q4bpfu19448tpc7slsj8bv.apps.googleusercontent.com'>
+        <ContextShare>
+          <App />
+        </ContextShare>
+      </GoogleOAuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )
