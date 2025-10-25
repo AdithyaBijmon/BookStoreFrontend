@@ -38,6 +38,22 @@ import SERVERURL from "./serverURL"
     export const getSingleBookAPI = async(bookID,reqHeader)=>{
      return await commonAPI("GET",`${SERVERURL}/book/${bookID}/view`,{},reqHeader)
     }
+
+    // user uploaded book
+    export const getAllUserUploadBooksAPI = async(reqHeader)=>{
+     return await commonAPI("GET",`${SERVERURL}/user-books`,{},reqHeader)
+    }
+
+    // user purchased book
+    export const getAllUserPurchasedBooksAPI = async(reqHeader)=>{
+     return await commonAPI("GET",`${SERVERURL}/user-bought-books`,{},reqHeader)
+    }
+
+    // remove user book
+    export const removeUserUploadBookAPI = async(bookID,reqHeader)=>{
+     return await commonAPI("DELETE",`${SERVERURL}/user-book/${bookID}/remove`,{},reqHeader)
+    }
+
     
     // profile update
     // purchased selled books

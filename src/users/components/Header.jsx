@@ -4,6 +4,7 @@ import { faBars, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import SERVERURL from '../../services/serverURL';
 
 
 
@@ -60,7 +61,7 @@ const Header = () => {
             <div className='relative inline-block text-left'>
               <div>
                 <button onClick={() => setDropDownStatus(!dropDownStatus)} className='w-full bg-white px-3 py-2 shadow-xs hover:bg-gray-50'>
-                  <img style={{ width: '40px', height: '40px' }} className='rounded-full mx-2' src={userDp == "" ? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : userDp.startsWith("https://lh3.googleusercontent.com/a")?userDp:"https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="user" />
+                  <img style={{ width: '40px', height: '40px' }} className='rounded-full mx-2' src={userDp == "" ? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : userDp.startsWith("https://lh3.googleusercontent.com/")?userDp:`${SERVERURL}/uploads/${userDp}`} alt="user" />
                 </button>
 
                { 

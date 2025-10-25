@@ -4,7 +4,9 @@ import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify'
-import { addBookAPI } from '../../services/allAPI'
+import { addBookAPI, getAllUserPurchasedBooksAPI, getAllUserUploadBooksAPI, removeUserUploadBookAPI } from '../../services/allAPI'
+import Edit from '../components/Edit'
+import SERVERURL from '../../services/serverURL'
 
 const Profile = () => {
 
@@ -17,15 +19,90 @@ const Profile = () => {
 
   const [preview, setPreview] = useState("")
   const [previewList, setPreviewList] = useState([])
-  // const [token, setToken] = useState("")
+  const [userBooks, setUserBooks] = useState([])
+  const [deleteBookStatus, setDeleteBookStatus] = useState(false)
+  const [purchaseBooks, setPurchaseBooks] = useState([])
+  const [username,setUsername] = useState("")
+  const [userDp,setUserDp] = useState("")
+  
 
-  // useEffect(() => {
-  //   if (sessionStorage.getItem("token")) {
-  //     setToken(sessionStorage.getItem("token"))
-  //   }
-  // }, [])
+  useEffect(()=>{
+   const user = JSON.parse(sessionStorage.getItem("user"))
+   setUsername(user.username)
+   setUserDp(user.profile)
+  },[])
+
+  useEffect(() => {
+    if (bookStatus == true) {
+      getAllUserBooks()
+    }
+    else if (purchaseBooks == true) {
+      getAllUserBoughtBooks()
+    }
+  }, [bookStatus, deleteBookStatus, purchaseStatus])
+
+  console.log(userBooks)
 
   // console.log(bookDetails)
+
+  const getAllUserBoughtBooks = async () => {
+    const token = sessionStorage.getItem("token")
+    const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+
+    try {
+      const result = await getAllUserPurchasedBooksAPI(reqHeader)
+      if (result.status == 200) {
+        setPurchaseBooks(result.data)
+      }
+      else {
+        console.log(result)
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+  const removeBook = async (bookId) => {
+    const token = sessionStorage.getItem("token")
+    const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+
+    try {
+      const result = await removeUserUploadBookAPI(bookId, reqHeader)
+      if (result.status == 200) {
+        toast.success(result.data)
+        setDeleteBookStatus(true)
+      }
+      else {
+        console.log(result)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getAllUserBooks = async () => {
+    const token = sessionStorage.getItem("token")
+    const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+    try {
+      const result = await getAllUserUploadBooksAPI(reqHeader)
+      if (result.status == 200) {
+        setUserBooks(result.data)
+
+      }
+      else {
+        console.log(result)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const handleReset = () => {
     setBookDetails({
@@ -101,21 +178,24 @@ const Profile = () => {
 
     }
   }
+
+
+
   return (
     <>
       <Header />
       <div style={{ height: '200px' }} className='bg-black'></div>
       <div className="bg-white p-3 " style={{ width: '200px', height: '200px', borderRadius: '50%', marginTop: '-130px', marginLeft: '80px' }}>
-        <img style={{ width: '180px', height: '180px', borderRadius: '50%' }} src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="profile" />
+        <img style={{ width: '180px', height: '180px', borderRadius: '50%' }} src={!userDp?"https://cdn-icons-png.flaticon.com/512/149/149071.png":userDp.startsWith("https://lh3.googleusercontent.com/")?userDp:`${SERVERURL}/uploads/${userDp}`} alt="profile" />
       </div>
 
       <div className="md:flex justify-between px-20 mt-5">
         <div className="flex items-center">
-          <h1 className='font-bold text-2xl'>Username</h1>
+          <h1 className='font-bold text-2xl'>{username}</h1>
           <FontAwesomeIcon className='text-blue-400 ms-3 mt-1' icon={faCircleCheck} />
         </div>
 
-        <div>Edit</div>
+        <Edit/>
       </div>
 
       <p className="md:px-20 px-5 my-5 text-justify">
@@ -238,33 +318,47 @@ const Profile = () => {
           <div className='p-10 my-20 shadow rounded'>
             {/* duplicate div according to the book */}
 
-            <div className="p-5 rounde mt-4 bg-gray-100">
-              <div className="md:grid grid-cols-[3fr_1fr]">
-                <div className="px-4">
-                  <h1 className='text-2xl'>Book Title</h1>
-                  <h2 className='text-xl'>Author</h2>
-                  <h3 className='text-lg text-blue-500'>$ 300</h3>
-                  <p className='text-justify'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem animi perspiciatis sunt illo quam veniam facere quasi maxime deserunt numquam accusantium, consequuntur fuga atque quia vero fugiat nesciunt odio temporibus?</p>
+            {
+              userBooks.length > 0 ?
+                userBooks?.map((item, index) => (
+                  <div key={index} className="p-5 rounde mt-4 bg-gray-100">
+                    <div className="md:grid grid-cols-[3fr_1fr]">
+                      <div className="px-4">
+                        <h1 className='text-2xl'>{item?.title}</h1>
+                        <h2 className='text-xl'>{item?.author}</h2>
+                        <h3 className='text-lg text-blue-500'>$ {item?.discountPrice}</h3>
+                        <p className='text-justify'>{item?.abstract}</p>
 
-                  <div className="flex">
-                    <img width={'120px'} height={'100px'} src="https://psdstamps.com/wp-content/uploads/2022/04/round-pending-stamp-png.png" alt="" />
+                        <div className="flex">
+                          {
+                            item?.status == "pending" ?
+                              <img width={'120px'} height={'100px'} src="https://psdstamps.com/wp-content/uploads/2022/04/round-pending-stamp-png.png" alt="pending" />
+                              :
+                              item?.status == "approved" ?
 
-                    <img width={'100px'} height={'100px'} src="https://static.vecteezy.com/system/resources/previews/024/382/871/non_2x/approved-sign-symbol-icon-label-stamp-green-round-design-transparent-background-free-png.png" alt="" />
+                                <img width={'100px'} height={'100px'} src="https://static.vecteezy.com/system/resources/previews/024/382/871/non_2x/approved-sign-symbol-icon-label-stamp-green-round-design-transparent-background-free-png.png" alt="approved" />
+                                :
+
+                                <img width={'100px'} height={'100px'} src="https://png.pngtree.com/png-clipart/20230427/original/pngtree-rejected-icon-png-image_9115832.png" alt="rejected" />}
+                        </div>
+
+
+                      </div>
+
+                      <div className="px-4 mt-4 md:mt-0">
+                        <img height={'200px'} src={item?.imgUrl} alt="" className='w-full' />
+
+
+                        <div className='mt-4 flex justify-end'>
+                          <button onClick={() => removeBook(item?._id)} className='py-2 px-3 bg-red-500 text-white rounded cursor-pointer'>Delete</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
-
-                </div>
-
-                <div className="px-4 mt-4 md:mt-0">
-                  <img height={'200px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" className='w-full' />
-
-
-                  <div className='mt-4 flex justify-end'>
-                    <button className='py-2 px-3 bg-red-500 text-white rounded'>Delete</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+                ))
+                :
+                <p>You have'nt uploaded any books.</p>
+            }
 
           </div>
         }
@@ -277,29 +371,31 @@ const Profile = () => {
           <div className='p-10 my-20 shadow rounded'>
             {/* duplicate div according to the book */}
 
-            <div className="p-5 rounded mt-4 bg-gray-100">
-              <div className="md:grid grid-cols-[3fr_1fr]">
-                <div className="px-4">
-                  <h1 className='text-2xl'>Book Title</h1>
-                  <h2 className='text-xl'>Author</h2>
-                  <h3 className='text-lg text-blue-500'>$ 300</h3>
-                  <p className='text-justify'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem animi perspiciatis sunt illo quam veniam facere quasi maxime deserunt numquam accusantium, consequuntur fuga atque quia vero fugiat nesciunt odio temporibus?</p>
+            {
+              purchaseBooks.length > 0 ?
+                purchaseBooks.map((item, index) => (
+                  <div key={index} className="p-5 rounded mt-4 bg-gray-100">
+                    <div className="md:grid grid-cols-[3fr_1fr]">
+                      <div className="px-4">
+                        <h1 className='text-2xl'>{item?.title}</h1>
+                        <h2 className='text-xl'>{item?.author}</h2>
+                        <h3 className='text-lg text-blue-500'>$ {item?.discountPrice}</h3>
+                        <p className='text-justify'>{item?.abstract}</p>
 
-                  <div className="flex mt-5">
-                    <img width={'100px'} height={'100px'} src="https://cdn-icons-png.flaticon.com/512/6188/6188726.png" alt="" />
+                        <div className="flex mt-5">
+                          <img width={'100px'} height={'100px'} src={item?.imgUrl} alt="" />
+                        </div>
+                      </div>
 
+                      <div className="px-4 mt-4 md:mt-0">
+                        <img height={'200px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" className='w-full' />
 
+                      </div>
+                    </div>
                   </div>
-
-
-                </div>
-
-                <div className="px-4 mt-4 md:mt-0">
-                  <img height={'200px'} src="https://rukminim2.flixcart.com/image/480/640/jtsz3bk0/book/0/1/7/the-da-vinci-code-original-imaff2myzh34vpzy.jpeg?q=90" alt="" className='w-full' />
-
-                </div>
-              </div>
-            </div>
+                )):
+                <p>You have'nt purchased any books yet!</p>
+            }
 
           </div>
 
