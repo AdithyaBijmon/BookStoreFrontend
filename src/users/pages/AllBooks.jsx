@@ -110,10 +110,10 @@ const AllBooks = () => {
 
               <div className="col-span-3">
                 <div className="md:grid grid-cols-4 gap-5">
-                  {
+                  { 
                     books?.length > 0 ?
                       books?.map((book,index) => (
-                        <div key={index} className='shadow rounded p-3'>
+                        <div key={index} className='shadow rounded p-3' hidden={book?.status=="pending" || book?.status=="sold"}>
                           <img width={'100%'} height={'400px'} src={book?.imgUrl} alt="" />
                           <div className='flex justify-center items-center flex-col  my-5'>
                             <h3 className='text-blue-500 font-bold'>{book?.author.slice(0, 20)}</h3>

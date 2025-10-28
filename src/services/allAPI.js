@@ -1,69 +1,78 @@
 import commonAPI from "./commonAPI"
 import SERVERURL from "./serverURL"
 
-// guest user
-    // register api - called by Auth component when register button clicked,content-type:"applicaton/json"
-    
-    export const registerAPI = async(reqBody)=>{
-     return await commonAPI("POST",`${SERVERURL}/register`,reqBody)
-    }
+// ---------guest user----------
+// register api - called by Auth component when register button clicked,content-type:"applicaton/json"
 
-    // login api
+export const registerAPI = async (reqBody) => {
+    return await commonAPI("POST", `${SERVERURL}/register`, reqBody)
+}
 
-    export const loginAPI = async(reqBody)=>{
-     return await commonAPI("POST",`${SERVERURL}/login`,reqBody)
-    }
-    
-    // google login api
-    export const googleLoginAPI = async(reqBody)=>{
-     return await commonAPI("POST",`${SERVERURL}/google-login`,reqBody)
-    }
-    // home page books api
-    export const getHomeBooksAPI = async()=>{
-     return await commonAPI("GET",`${SERVERURL}/home-books`)
-    }
-    // all career api
+// login api
 
-// authorised users - user
+export const loginAPI = async (reqBody) => {
+    return await commonAPI("POST", `${SERVERURL}/login`, reqBody)
+}
 
-    // upload book
-    export const addBookAPI = async(reqBody,reqHeader)=>{
-     return await commonAPI("POST",`${SERVERURL}/add-book`,reqBody,reqHeader)
-    }
-    // view all books 
-    export const getAllBooksAPI = async(search,reqHeader)=>{
-     return await commonAPI("GET",`${SERVERURL}/all-books?search=${search}`,{},reqHeader)
-    }
-    // view single book - called by view component when it load in browser
-    export const getSingleBookAPI = async(bookID,reqHeader)=>{
-     return await commonAPI("GET",`${SERVERURL}/book/${bookID}/view`,{},reqHeader)
-    }
+// google login api
+export const googleLoginAPI = async (reqBody) => {
+    return await commonAPI("POST", `${SERVERURL}/google-login`, reqBody)
+}
+// home page books api
+export const getHomeBooksAPI = async () => {
+    return await commonAPI("GET", `${SERVERURL}/home-books`)
+}
+// all career api
 
-    // user uploaded book
-    export const getAllUserUploadBooksAPI = async(reqHeader)=>{
-     return await commonAPI("GET",`${SERVERURL}/user-books`,{},reqHeader)
-    }
+// authorised users - ---------user------------
 
-    // user purchased book
-    export const getAllUserPurchasedBooksAPI = async(reqHeader)=>{
-     return await commonAPI("GET",`${SERVERURL}/user-bought-books`,{},reqHeader)
-    }
+// upload book
+export const addBookAPI = async (reqBody, reqHeader) => {
+    return await commonAPI("POST", `${SERVERURL}/add-book`, reqBody, reqHeader)
+}
+// view all books 
+export const getAllBooksAPI = async (search, reqHeader) => {
+    return await commonAPI("GET", `${SERVERURL}/all-books?search=${search}`, {}, reqHeader)
+}
+// view single book - called by view component when it load in browser
+export const getSingleBookAPI = async (bookID, reqHeader) => {
+    return await commonAPI("GET", `${SERVERURL}/book/${bookID}/view`, {}, reqHeader)
+}
 
-    // remove user book
-    export const removeUserUploadBookAPI = async(bookID,reqHeader)=>{
-     return await commonAPI("DELETE",`${SERVERURL}/user-book/${bookID}/remove`,{},reqHeader)
-    }
+// user uploaded book
+export const getAllUserUploadBooksAPI = async (reqHeader) => {
+    return await commonAPI("GET", `${SERVERURL}/user-books`, {}, reqHeader)
+}
 
-    
-    // profile update
-    // purchased selled books
-    // approved books
+// user purchased book
+export const getAllUserPurchasedBooksAPI = async (reqHeader) => {
+    return await commonAPI("GET", `${SERVERURL}/user-bought-books`, {}, reqHeader)
+}
 
-// authorised users - admin
-    // add career 
-    // update admin
-    // list books
-    // list users
-    // approve books
+// remove user book
+export const removeUserUploadBookAPI = async (bookID, reqHeader) => {
+    return await commonAPI("DELETE", `${SERVERURL}/user-book/${bookID}/remove`, {}, reqHeader)
+}
+
+
+// profile update
+// purchased selled books
+// approved books
+
+// authorised users ---------- admin----------
+// add career 
+// update admin
+// list books
+export const getAllBooksAdminAPI = async (reqHeader) => {
+    return await commonAPI("GET", `${SERVERURL}/admin-all-books`, {}, reqHeader)
+}
+// list users
+export const getAllUsersAPI = async (reqHeader) => {
+    return await commonAPI("GET", `${SERVERURL}/all-users`, {}, reqHeader)
+}
+// approve books
+export const approveBookStatusAPI = async (reqBody,reqHeader) => {
+    return await commonAPI("PUT", `${SERVERURL}/admin/book/approve`,reqBody,reqHeader)
+}
 
 

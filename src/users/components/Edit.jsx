@@ -1,8 +1,9 @@
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SERVERURL from '../../services/serverURL'
+import { userUpdateContext } from '../../contextAPI/ContextShare'
 
 const Edit = () => {
   const [offCanvasStatus, setOffCanvasStatus] = useState(false)
@@ -10,6 +11,7 @@ const Edit = () => {
   const [token,setToken] = useState("")
   const [existingProfile,setExistingProfile] = useState("")
   const [preview,setPreview] = useState("")
+  const { setUserEditResponse } = useContext(userUpdateContext)
 
   useEffect(()=>{
     if(sessionStorage.getItem("token")){
