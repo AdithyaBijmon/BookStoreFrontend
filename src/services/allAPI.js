@@ -62,6 +62,9 @@ export const removeUserUploadBookAPI = async (bookID, reqHeader) => {
 // authorised users ---------- admin----------
 // add career 
 // update admin
+export const UpdateAdminProfileAPI = async (reqHeader,reqBody) => {
+    return await commonAPI("PUT",`${SERVERURL}/admin-profile/edit`,reqBody, reqHeader)
+}
 // list books
 export const getAllBooksAdminAPI = async (reqHeader) => {
     return await commonAPI("GET", `${SERVERURL}/admin-all-books`, {}, reqHeader)

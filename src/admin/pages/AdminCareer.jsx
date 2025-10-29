@@ -5,6 +5,7 @@ import AdminSideBar from '../components/AdminSideBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import AddJob from '../components/AddJob'
 
 
 const AdminCareer = () => {
@@ -36,7 +37,7 @@ const AdminCareer = () => {
                   <button className='px-3 py-2 bg-blue-600 text-white'>Search</button>
                 </div>
 
-                <div>Add</div>
+                <AddJob/>
               </div>
               <div className='shadow px-5 py-3 md:mx-20 mx-5 border-gray-300 my-10'>
                 <div className='flex mb-3'>

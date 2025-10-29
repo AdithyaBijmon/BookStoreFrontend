@@ -1,11 +1,82 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AdminHeader from '../components/AdminHeader'
 import Footer from '../../components/Footer'
 import AdminSideBar from '../components/AdminSideBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
+import SERVERURL from '../../services/serverURL'
+import { toast, ToastContainer } from 'react-toastify'
+import { UpdateAdminProfileAPI } from '../../services/allAPI'
+import { adminUpdateContext } from '../../contextAPI/ContextShare'
+
 
 const AdminSetting = () => {
+  const {setAdminEditResponse} = useContext(adminUpdateContext)
+  const [adminDetails, setAdminDetails] = useState({ username: "", password: "", cPassword: "", profile: "" })
+
+  const [existingProfilePic, setExistingProfilePic] = useState("")
+  const [preview, setPreview] = useState("")
+
+  useEffect(() => {
+    if (sessionStorage.getItem("user")) {
+      const user = JSON.parse(sessionStorage.getItem("user"))
+      setAdminDetails({ ...adminDetails, username: user.username, password: user.password, cPassword: user.password })
+      setExistingProfilePic(user.profile)
+    }
+  }, [])
+
+  const handleUploadProfilePic = (e) => {
+    setAdminDetails({ ...adminDetails, profile: e.target.files[0] })
+    const url = URL.createObjectURL(e.target.files[0])
+    setPreview(url)
+  }
+
+  const handleReset = () => {
+    setAdminDetails({ profile: "", username: user.username, password: user.password, cPassword: password })
+    setExistingProfilePic(user.profile)
+    setPreview("")
+  }
+
+  const handleUpdateAdminProfile = async () => {
+    const { username, password, profile, cPassword } = adminDetails
+
+    if(!username || !password || !cPassword){
+      toast.info("Please fill the form completely")
+    }
+    else if (password != cPassword) {
+      toast.warning("Password and confirm password must be same")
+      handleReset()
+    }
+    else {
+      const token = sessionStorage.getItem("token")
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const reqBody = new FormData()
+      reqBody.append("username",username)
+      reqBody.append("password",password)
+      reqBody.append("bio","")
+      preview?reqBody.append("profile",profile):reqBody.append("profile",existingProfilePic)
+      try{
+        const result = await UpdateAdminProfileAPI(reqBody,reqHeader)
+        if(result.status==200){
+          sessionStorage.setItem("user",JSON.stringify(result.data))
+          setAdminEditResponse(result.data)
+          toast.success("Profile updated successfully!")
+          handleReset()
+        }
+        else{
+          console.log(result)
+        }
+
+      }catch(err){
+        toast.error("Something went wrong")
+      }
+    }
+
+
+  }
+
   return (
     <>
       <AdminHeader />
@@ -28,28 +99,33 @@ const AdminSetting = () => {
             </div>
 
             <div className='md:mt-0 mt-10 rounded bg-blue-100 p-10 flex justify-center items-center flex-col'>
-              <input type="file" id='adminPic' className='hidden' />
+              <input onClick={(e) => handleUploadProfilePic(e.target.value)} type="file" id='adminPic' className='hidden' />
               <label htmlFor="adminPic">
-                <img width={'120px'} height={'120px'} className='rounded-full' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_qFV8xAq4hSf0Tj_JCR6xRbZJpVBR3PXIQ&s" alt="admin-profile" />
+                {
+                  existingProfilePic ?
+                    <img width={'120px'} height={'120px'} className='rounded-full' src={preview ? preview : `${SERVERURL}/uploads/${existingProfilePic}`} alt="admin-profile" />
+                    :
+                    <img width={'120px'} height={'120px'} className='rounded-full' src={preview ? preview : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_qFV8xAq4hSf0Tj_JCR6xRbZJpVBR3PXIQ&s"} alt="admin-profile" />
+                }
                 <FontAwesomeIcon style={{ marginLeft: '100px', marginTop: '-100px' }} icon={faPen} className='bg-yellow-400 p-1 text-white rounded' />
 
               </label>
 
               <div className="mb-3 w-full">
-                <input type="text" placeholder='Username' className='bg-white placeholder-gray-400 p-1 w-full rounded' />
+                <input value={adminDetails.username} onChange={(e) => setAdminDetails({ ...adminDetails, username: e.target.value })} type="text" placeholder='Username' className='bg-white placeholder-gray-400 p-1 w-full rounded' />
               </div>
 
               <div className="mb-3 w-full">
-                <input type="text" placeholder='Password' className='bg-white placeholder-gray-400 p-1 w-full rounded' />
+                <input value={adminDetails.password} onChange={(e) => setAdminDetails({ ...adminDetails, password: e.target.value })} type="text" placeholder='Password' className='bg-white placeholder-gray-400 p-1 w-full rounded' />
               </div>
 
               <div className="mb-3 w-full">
-                <input type="text" placeholder='Confirm Password' className='bg-white placeholder-gray-400 p-1 w-full rounded' />
+                <input value={adminDetails.cPassword} onChange={(e) => setAdminDetails({ ...adminDetails, cPassword: e.target.value })} type="text" placeholder='Confirm Password' className='bg-white placeholder-gray-400 p-1 w-full rounded' />
               </div>
 
               <div className="mY-3-3 w-full flex justify-evenly">
-                <button className='bg-orange-600 px-3 py-2 text-white rounded'>RESET</button>
-                <button className='rounded bg-green-900 text-white px-3 py-2 '>UPDATE</button>
+                <button onClick={handleReset} className='bg-orange-600 px-3 py-2 text-white rounded'>RESET</button>
+                <button onClick={handleUpdateAdminProfile} className='rounded bg-green-900 text-white px-3 py-2 '>UPDATE</button>
 
               </div>
 
@@ -62,6 +138,19 @@ const AdminSetting = () => {
 
       </div>
       <Footer />
+       <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+
+      />
     </>
   )
 }

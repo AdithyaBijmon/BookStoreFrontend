@@ -1,14 +1,26 @@
 import { faBook, faGear, faGraduationCap, faHouse } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { adminUpdateContext } from '../../contextAPI/ContextShare'
+import SERVERURL from '../../services/serverURL'
 
 
 
 const AdminSideBar = () => {
+    const {adminEditResponse} = useContext(adminUpdateContext)
+    const [dp,setDp] = useState("")
+    const [adminName,setAdminName] = useState("")
+
+    useEffect(()=>{
+        const user = JSON.parse(sessionStorage.getItem("user"))
+        setDp(user.profile)
+        setAdminName(user.username)
+        
+    },[adminEditResponse])
     return (
         <div className='bg-blue-200  md:min-h-screen h-full md:flex text-center flex-col py-10'>
-            <div className='flex justify-center'> <img width={'120px'} height={'120px'} className='rounded-full' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_qFV8xAq4hSf0Tj_JCR6xRbZJpVBR3PXIQ&s" alt="admin-profile" /></div>
+            <div className='flex justify-center'> <img width={'120px'} height={'120px'} className='rounded-full' src={dp==""?"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_qFV8xAq4hSf0Tj_JCR6xRbZJpVBR3PXIQ&s":`${SERVERURL}/uploads/${dp}`} alt="admin-profile" /></div>
             <h1 className="text-xl font-bold my-5">
                 Admin name
             </h1>
