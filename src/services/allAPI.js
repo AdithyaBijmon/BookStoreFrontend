@@ -22,7 +22,10 @@ export const googleLoginAPI = async (reqBody) => {
 export const getHomeBooksAPI = async () => {
     return await commonAPI("GET", `${SERVERURL}/home-books`)
 }
-// all career api
+// get all jobs 
+export const getAllJobsAPI = async (searchKey) => {
+    return await commonAPI("GET", `${SERVERURL}/all-jobs?search=${searchKey}`)
+}
 
 // authorised users - ---------user------------
 
@@ -61,6 +64,13 @@ export const removeUserUploadBookAPI = async (bookID, reqHeader) => {
 
 // authorised users ---------- admin----------
 // add career 
+export const addJobAPI = async (reqBody, reqHeader) => {
+    return await commonAPI("POST", `${SERVERURL}/admin/add-job`, reqBody, reqHeader)
+}
+// delete job
+export const removeJobAPI = async (jobID, reqHeader) => {
+    return await commonAPI("DELETE", `${SERVERURL}/admin/${jobID}/remove-job`, {}, reqHeader)
+}
 // update admin
 export const UpdateAdminProfileAPI = async (reqHeader,reqBody) => {
     return await commonAPI("PUT",`${SERVERURL}/admin-profile/edit`,reqBody, reqHeader)

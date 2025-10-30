@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminHeader from '../components/AdminHeader'
 import Footer from '../../components/Footer'
 import AdminSideBar from '../components/AdminSideBar'
@@ -6,12 +6,63 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import AddJob from '../components/AddJob'
+import { getAllJobsAPI, removeJobAPI } from '../../services/allAPI'
 
 
 const AdminCareer = () => {
 
   const [jobListStatus, setJobListStatus] = useState(true)
   const [listApplicantionStatus, setListApplicationStatus] = useState(false)
+
+
+  const [allJobs,setAllJobs] = useState([])
+  const [searchKey,setSearchKey] = useState("")
+  const [deleteJobResponse,setDeleteJobResponse] = useState({})
+  // console.log(allJobs);
+
+  useEffect(()=>{
+    if(jobListStatus==true){
+      getAllJobs()
+    }
+  },[searchKey,deleteJobResponse])
+  
+
+  const getAllJobs = async ()=>{
+    try{
+      const result = await getAllJobsAPI(searchKey)
+      if(result.status==200){
+        setAllJobs(result.data)
+        
+      }
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  const removeJob = async (id)=>{
+    const token = sessionStorage.getItem("token")
+    
+    if(token){
+      const reqHeader = {
+        "Authorization":`Bearer ${token}`
+      }
+    
+      try{
+        const result = await removeJobAPI(id,reqHeader)
+        if(result.status == 200){
+          setDeleteJobResponse(result.data)
+        }
+        else{
+          console.log(result)
+        }
+
+      }catch(err){
+        console.log(err)
+      }
+    }
+  }
+
   return (
     <>
       <AdminHeader />
@@ -33,39 +84,46 @@ const AdminCareer = () => {
             <>
               <div className='flex justify-between items-center my-10 mx-5'>
                 <div>
-                  <input className='border p-2 border-gray-300' type="text" placeholder='Search by title' />
-                  <button className='px-3 py-2 bg-blue-600 text-white'>Search</button>
+                  <input onChange={(e)=>setSearchKey(e.target.value)} className='border p-2 border-gray-300' type="text" placeholder='Search by title' />
+                  <button  className='px-3 py-2 bg-blue-600 text-white'>Search</button>
                 </div>
 
                 <AddJob/>
               </div>
-              <div className='shadow px-5 py-3 md:mx-20 mx-5 border-gray-300 my-10'>
+             {
+              allJobs.length>0?
+              allJobs?.map(job=>(
+                 <div key={job?._id} className='shadow px-5 py-3 md:mx-20 mx-5 border-gray-300 my-10'>
                 <div className='flex mb-3'>
 
                   <div className='w-full'>
-                    <h5 className='text-xl font-bold'>Job Title</h5>
+                    <h5 className='text-xl font-bold'>{job?.title}</h5>
                     <hr className='mt-3 text-gray-300' />
                   </div>
-                  <button onClick={() => setModalStatus(true)} className='px-3 py-2 text-white bg-red-700 flex items-center ms-3'>Delete <FontAwesomeIcon icon={faTrash} /></button>
+                  <button onClick={()=>removeJob(job?._id)} className='px-3 py-2 text-white bg-red-700 flex items-center ms-3 cursor-pointer'>Delete <FontAwesomeIcon icon={faTrash} /></button>
                 </div>
 
                 <div>
-                  <h4><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />Location</h4>
-                  <p className=' my-2'>Job Type: Senior Level</p>
+                  <h4><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />{job?.location}</h4>
+                  <p className=' my-2'>Job Type: {job?.jobType}</p>
 
-                  <p className='my-2'>Salary: 10 lakhs</p>
+                  <p className='my-2'>Salary: {job?.salary}</p>
 
-                  <p className=' my-2'>Qualification: M-Tech /B-Tech/BCA/MCA</p>
+                  <p className=' my-2'>Qualification: {job?.qualification}</p>
 
-                  <p className=' my-2'>Experience: 5-7</p>
+                  <p className=' my-2'>Experience: {job?.experience}</p>
 
-                  <p className=' my-2'>Description : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                  <p className=' my-2'>Description : {job?.description}</p>
 
 
                 </div>
 
 
               </div>
+              ))
+              :
+              <p>No jobs available...</p>
+             }
             </>
 
 
