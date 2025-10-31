@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AdminHeader from '../components/AdminHeader'
 import Footer from '../../components/Footer'
 import AdminSideBar from '../components/AdminSideBar'
@@ -7,57 +7,58 @@ import { faLocationDot, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import AddJob from '../components/AddJob'
 import { getAllJobsAPI, removeJobAPI } from '../../services/allAPI'
+import { jobContext } from '../../contextAPI/ContextShare'
 
 
 const AdminCareer = () => {
-
+  const { addjobResponse, setAddJobResponse } = useContext(jobContext)
   const [jobListStatus, setJobListStatus] = useState(true)
   const [listApplicantionStatus, setListApplicationStatus] = useState(false)
 
 
-  const [allJobs,setAllJobs] = useState([])
-  const [searchKey,setSearchKey] = useState("")
-  const [deleteJobResponse,setDeleteJobResponse] = useState({})
+  const [allJobs, setAllJobs] = useState([])
+  const [searchKey, setSearchKey] = useState("")
+  const [deleteJobResponse, setDeleteJobResponse] = useState({})
   // console.log(allJobs);
 
-  useEffect(()=>{
-    if(jobListStatus==true){
+  useEffect(() => {
+    if (jobListStatus == true) {
       getAllJobs()
     }
-  },[searchKey,deleteJobResponse])
-  
+  }, [searchKey, deleteJobResponse, addjobResponse])
 
-  const getAllJobs = async ()=>{
-    try{
+
+  const getAllJobs = async () => {
+    try {
       const result = await getAllJobsAPI(searchKey)
-      if(result.status==200){
+      if (result.status == 200) {
         setAllJobs(result.data)
-        
+
       }
 
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
 
-  const removeJob = async (id)=>{
+  const removeJob = async (id) => {
     const token = sessionStorage.getItem("token")
-    
-    if(token){
+
+    if (token) {
       const reqHeader = {
-        "Authorization":`Bearer ${token}`
+        "Authorization": `Bearer ${token}`
       }
-    
-      try{
-        const result = await removeJobAPI(id,reqHeader)
-        if(result.status == 200){
+
+      try {
+        const result = await removeJobAPI(id, reqHeader)
+        if (result.status == 200) {
           setDeleteJobResponse(result.data)
         }
-        else{
+        else {
           console.log(result)
         }
 
-      }catch(err){
+      } catch (err) {
         console.log(err)
       }
     }
@@ -84,46 +85,46 @@ const AdminCareer = () => {
             <>
               <div className='flex justify-between items-center my-10 mx-5'>
                 <div>
-                  <input onChange={(e)=>setSearchKey(e.target.value)} className='border p-2 border-gray-300' type="text" placeholder='Search by title' />
-                  <button  className='px-3 py-2 bg-blue-600 text-white'>Search</button>
+                  <input onChange={(e) => setSearchKey(e.target.value)} className='border p-2 border-gray-300' type="text" placeholder='Search by title' />
+                  <button className='px-3 py-2 bg-blue-600 text-white'>Search</button>
                 </div>
 
-                <AddJob/>
+                <AddJob />
               </div>
-             {
-              allJobs.length>0?
-              allJobs?.map(job=>(
-                 <div key={job?._id} className='shadow px-5 py-3 md:mx-20 mx-5 border-gray-300 my-10'>
-                <div className='flex mb-3'>
+              {
+                allJobs.length > 0 ?
+                  allJobs?.map(job => (
+                    <div key={job?._id} className='shadow px-5 py-3 md:mx-20 mx-5 border-gray-300 my-10'>
+                      <div className='flex mb-3'>
 
-                  <div className='w-full'>
-                    <h5 className='text-xl font-bold'>{job?.title}</h5>
-                    <hr className='mt-3 text-gray-300' />
-                  </div>
-                  <button onClick={()=>removeJob(job?._id)} className='px-3 py-2 text-white bg-red-700 flex items-center ms-3 cursor-pointer'>Delete <FontAwesomeIcon icon={faTrash} /></button>
-                </div>
+                        <div className='w-full'>
+                          <h5 className='text-xl font-bold'>{job?.title}</h5>
+                          <hr className='mt-3 text-gray-300' />
+                        </div>
+                        <button onClick={() => removeJob(job?._id)} className='px-3 py-2 text-white bg-red-700 flex items-center ms-3 cursor-pointer'>Delete <FontAwesomeIcon icon={faTrash} /></button>
+                      </div>
 
-                <div>
-                  <h4><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />{job?.location}</h4>
-                  <p className=' my-2'>Job Type: {job?.jobType}</p>
+                      <div>
+                        <h4><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />{job?.location}</h4>
+                        <p className=' my-2'>Job Type: {job?.jobType}</p>
 
-                  <p className='my-2'>Salary: {job?.salary}</p>
+                        <p className='my-2'>Salary: ₹{job?.salary}</p>
 
-                  <p className=' my-2'>Qualification: {job?.qualification}</p>
+                        <p className=' my-2'>Qualification: {job?.qualification}</p>
 
-                  <p className=' my-2'>Experience: {job?.experience}</p>
+                        <p className=' my-2'>Experience: {job?.experience}</p>
 
-                  <p className=' my-2'>Description : {job?.description}</p>
-
-
-                </div>
+                        <p className=' my-2'>Description : {job?.description}</p>
 
 
-              </div>
-              ))
-              :
-              <p>No jobs available...</p>
-             }
+                      </div>
+
+
+                    </div>
+                  ))
+                  :
+                  <p>No jobs available...</p>
+              }
             </>
 
 

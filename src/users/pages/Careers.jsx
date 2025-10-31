@@ -1,14 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpRightFromSquare, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { getAllJobsAPI } from '../../services/allAPI'
 
 
 
 
 const Careers = () => {
   const [modalStatus, setModalStatus] = useState(false)
+  const [allJobs, setAllJobs] = useState([])
+  const [searchKey, setSearchKey] = useState("")
+  const [jobListStatus, setJobListStatus] = useState(true)
+
+  useEffect(() => {
+    if (jobListStatus == true) {
+      getAllJobs()
+    }
+  }, [searchKey])
+
+  const getAllJobs = async () => {
+    try {
+      const result = await getAllJobsAPI(searchKey)
+      if (result.status == 200) {
+        setAllJobs(result.data)
+
+      }
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <>
 
@@ -24,37 +47,44 @@ const Careers = () => {
 
       <h5 className='text-xl md:mx-10 md:my-5'>Current Openings</h5>
       <div className="flex my-5 justify-center ">
-        <input className='border p-2 border-gray-300' type="text" placeholder='Search by title' />
+        <input onChange={(e) => setSearchKey(e.target.value)} className='border p-2 border-gray-300' type="text" placeholder='Search by title' />
         <button className='px-3 py-2 bg-blue-600 text-white'>Search</button>
       </div>
 
-      <div className='shadow px-5 py-3 md:mx-40 border-gray-300'>
+    {
+      allJobs?.length>0?
+      allJobs?.map(job=>(
+          <div key={job?._id} className='my-10 shadow px-5 py-3 md:mx-40 border-gray-300'>
         <div className='flex mb-3'>
 
           <div className='w-full'>
-            <h5 className='text-xl'>Job Title</h5>
+            <h5 className='text-xl'>{job?.title}</h5>
             <hr className='mt-3 text-gray-300' />
           </div>
           <button onClick={() => setModalStatus(true)} className='px-3 py-2 text-white bg-blue-900 flex items-center ms-3'>Apply <FontAwesomeIcon icon={faArrowUpRightFromSquare} /></button>
         </div>
 
         <div>
-          <h4><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />Location</h4>
-          <p className=' my-2'>Job Type: Senior Level</p>
+          <h4><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />{job?.location}</h4>
+          <p className=' my-2'>Job Type:{job?.jobType}</p>
 
-          <p className='my-2'>Salary: 10 lakhs</p>
+          <p className='my-2'>Salary: ₹{job?.salary}</p>
 
-          <p className=' my-2'>Qualification: M-Tech /B-Tech/BCA/MCA</p>
+          <p className=' my-2'>Qualification: {job?.qualification}</p>
 
-          <p className=' my-2'>Experience: 5-7</p>
+          <p className=' my-2'>Experience: {job?.experience}</p>
 
-          <p className=' my-2'>Description : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+          <p className=' my-2'>Description : {job?.description}</p>
 
 
         </div>
 
 
       </div>
+      ))
+      :
+      <p>No jobs available...</p>
+    }
 
       {
         modalStatus &&
