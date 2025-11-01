@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import AddJob from '../components/AddJob'
-import { getAllJobsAPI, removeJobAPI } from '../../services/allAPI'
+import { getAllApplicationAPI, getAllJobsAPI, removeJobAPI } from '../../services/allAPI'
 import { jobContext } from '../../contextAPI/ContextShare'
+import SERVERURL from '../../services/serverURL'
 
 
 const AdminCareer = () => {
@@ -19,13 +20,39 @@ const AdminCareer = () => {
   const [allJobs, setAllJobs] = useState([])
   const [searchKey, setSearchKey] = useState("")
   const [deleteJobResponse, setDeleteJobResponse] = useState({})
+  const [applications, setApplications] = useState([])
   // console.log(allJobs);
 
   useEffect(() => {
     if (jobListStatus == true) {
       getAllJobs()
     }
-  }, [searchKey, deleteJobResponse, addjobResponse])
+    else if(listApplicantionStatus==true){
+      getApplications()
+    }
+  }, [searchKey, deleteJobResponse, addjobResponse,listApplicantionStatus])
+
+
+  const getApplications = async () => {
+    const token = sessionStorage.getItem("token")
+
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+
+      try{
+        const result = await getAllApplicationAPI(reqHeader)
+        if(result.status == 200){
+          setApplications(result.data)
+        }
+
+      }
+      catch(err){
+        console.log(err)
+      }
+    }
+  }
 
 
   const getAllJobs = async () => {
@@ -148,16 +175,23 @@ const AdminCareer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="border border-gray-500 p-3 text-center"> 1</td>
-                    <td className="border border-gray-500 p-3 text-center">Full stack developer</td>
-                    <td className="border border-gray-500 p-3 text-center">Lily John</td>
-                    <td className="border border-gray-500 p-3 text-center"> B.Tech</td>
-                    <td className="border border-gray-500 p-3 text-center"> lily@gmail.com</td>
-                    <td className="border border-gray-500 p-3 text-center"> 8978675645</td>
-                    <td className="border border-gray-500 p-3 text-center"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi odio ipsam et dicta eum voluptatum porro nesciunt, saepe excepturi dolorum maxime debitis aperiam cum nostrum est voluptas commodi reiciendis sapiente.</td>
-                    <td className="border border-gray-500 p-3 text-center"> <Link className='text-blue-600 underline'>Resume</Link></td>
+                 {
+                  applications.length>0?
+                  applications?.map((application,index)=>(
+                     <tr key={application?._id}>
+                    <td className="border border-gray-500 p-3 text-center"> {index+1}</td>
+                    <td className="border border-gray-500 p-3 text-center">{application?.jobTitle}</td>
+                    <td className="border border-gray-500 p-3 text-center">{application?.fullName}</td>
+                    <td className="border border-gray-500 p-3 text-center"> {application?.qualification}</td>
+                    <td className="border border-gray-500 p-3 text-center"> {application?.email}</td>
+                    <td className="border border-gray-500 p-3 text-center"> {application?.phone}</td>
+                    <td className="border border-gray-500 p-3 text-center"> {application?.coverLetter}</td>
+                    <td className="border border-gray-500 p-3 text-center"> <Link to={`${SERVERURL}/pdf/${application?.resume}`} className='text-blue-600 underline' target='_blank'>Resume</Link></td>
                   </tr>
+                  ))
+                  :
+                  <tr><p>No Applicaiton available.</p></tr>
+                 }
                 </tbody>
               </table>
             </div>

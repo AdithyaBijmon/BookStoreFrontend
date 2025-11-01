@@ -57,6 +57,16 @@ export const removeUserUploadBookAPI = async (bookID, reqHeader) => {
     return await commonAPI("DELETE", `${SERVERURL}/user-book/${bookID}/remove`, {}, reqHeader)
 }
 
+// add application API
+export const addApplicationAPI = async (reqBody, reqHeader) => {
+    return await commonAPI("POST", `${SERVERURL}/add-application`, reqBody, reqHeader)
+}
+
+// get all applications
+export const getAllApplicationAPI = async (reqHeader) => {
+    return await commonAPI("GET", `${SERVERURL}/all-applications`, {}, reqHeader)
+}
+
 
 // profile update
 // purchased selled books

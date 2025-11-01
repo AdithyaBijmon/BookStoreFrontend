@@ -1,9 +1,16 @@
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 const AdminHeader = () => {
+  const navigate = useNavigate()
+
+  const logout = ()=>{
+    sessionStorage.clear()
+    navigate('/')
+  }
   return (
     <>
 
@@ -16,7 +23,7 @@ const AdminHeader = () => {
         </div>
 
     
-          <button className='border border-black rounded py-2 px-3 ms-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faPowerOff} className='me-3' />Logout</button>
+          <button onClick={logout} className='border border-black rounded py-2 px-3 ms-3 hover:bg-black hover:text-white'><FontAwesomeIcon icon={faPowerOff} className='me-3' />Logout</button>
         
       </div>
 
