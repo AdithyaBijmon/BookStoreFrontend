@@ -1,14 +1,18 @@
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { userAuthContext } from '../../contextAPI/AuthenticationContext'
 
 
 const AdminHeader = () => {
   const navigate = useNavigate()
+  const {role,authorisedUser,setAuthorisedUser} = useContext(userAuthContext)
+  
 
   const logout = ()=>{
     sessionStorage.clear()
+    setAuthorisedUser(false)
     navigate('/')
   }
   return (

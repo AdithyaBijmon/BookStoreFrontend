@@ -14,12 +14,14 @@ import AdminCareer from './admin/pages/AdminCareer'
 import AdminResource from './admin/pages/AdminResource'
 import AdminSetting from './admin/pages/AdminSetting'
 import Pnf from './pages/Pnf'
-import  { userAuthContext } from './contextAPI/AuthenticationContext'
+import { userAuthContext } from './contextAPI/AuthenticationContext'
+import PaymentSuccess from './users/pages/PaymentSuccess'
+import PaymentError from './users/pages/PaymentError'
 
 function App() {
 
   const [loading, setLoading] = useState(true)
-  const {role,authorisedUser,setAuthorisedUser} = useContext(userAuthContext)
+  const { role, authorisedUser, setAuthorisedUser } = useContext(userAuthContext)
 
 
   useEffect(() => {
@@ -41,25 +43,31 @@ function App() {
         <Route path='/contact' element={<Contact />} />
 
 
-        { role=="user" &&
+       
+         { role=="user" &&
           <>
             <Route path='/book/:id/view' element={<ViewBook />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/payment-success' element={<PaymentSuccess/>}/>
+            <Route path='/payment-error' element={<PaymentError/>}/>
           </>
-        }
+          }
         
+
         {/* admin */}
-        { role=="admin" &&
-         <>
+        
+         { role=="admin" &&
+          <>
             <Route path='/admin-dashboard' element={loading ? <Preloader /> : <AdminDashboard />} />
-          <Route path='/admin-careers' element={<AdminCareer />} />
-          <Route path='/admin-resources' element={<AdminResource/>}/>
-          <Route path='/admin-settings' element={<AdminSetting/>}/>
-         </>
-        }
+            <Route path='/admin-careers' element={<AdminCareer />} />
+            <Route path='/admin-resources' element={<AdminResource />} />
+            <Route path='/admin-settings' element={<AdminSetting />} />
+          </>
+          }
+        
 
         {/* Page not found */}
-        <Route path='/*' element={<Pnf/>}/>
+        <Route path='/*' element={<Pnf />} />
 
 
 

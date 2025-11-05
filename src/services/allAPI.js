@@ -67,6 +67,11 @@ export const getAllApplicationAPI = async (reqHeader) => {
     return await commonAPI("GET", `${SERVERURL}/all-applications`, {}, reqHeader)
 }
 
+// make-payment
+export const makePaymentAPI = async (reqBody, reqHeader) => {
+    return await commonAPI("POST", `${SERVERURL}/make-payment`, reqBody, reqHeader)
+}
+
 
 // profile update
 // purchased selled books

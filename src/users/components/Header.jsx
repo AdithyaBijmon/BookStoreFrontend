@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import SERVERURL from '../../services/serverURL';
 import { userUpdateContext } from '../../contextAPI/ContextShare';
+import { userAuthContext } from '../../contextAPI/AuthenticationContext';
 
 
 
@@ -17,6 +18,8 @@ const Header = () => {
   const [dropDownStatus, setDropDownStatus] = useState(false)
   const navigate = useNavigate()
   const { userEditResponse } = useContext(userUpdateContext)
+  const {role,authorisedUser,setAuthorisedUser} = useContext(userAuthContext)
+  
   
 
 
@@ -32,6 +35,7 @@ const Header = () => {
 
   const logout = ()=>{
     sessionStorage.clear()
+    setAuthorisedUser(false)
     setToken("")
     userDp("")
     setDropDownStatus(false)
